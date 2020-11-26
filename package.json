@@ -1,0 +1,23 @@
+{
+  "name": "venombotzap",
+  "version": "1.0.0",
+  "description": "",
+  "main": "venom.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "bot": "node src/venom.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "fs": "0.0.1-security",
+    "mime": "^2.4.6",
+    "venom-bot": "^2.0.26"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}
