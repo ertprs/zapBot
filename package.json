@@ -5,7 +5,7 @@
   "main": "venom.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "bot": "node src/venom.js"
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
