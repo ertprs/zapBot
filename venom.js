@@ -8,7 +8,8 @@ const app = express();
 
 app.use('/', express.static('public'));
 
-venom
+app.use("/go", (req,res) => {
+  venom
   .create(
     'sessionName',
     (base64Qr, asciiQR, attempts, urlCode) => {
@@ -35,7 +36,7 @@ venom
       );
     },
     undefined,
-    { logQR: false }
+    { logQR: true }
   )
   .then((client) => {
     start(client);
@@ -64,5 +65,8 @@ function start(client) {
     }
   })
 }
+res.send("ok")
+})
+
 
 module.exports = app;
