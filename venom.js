@@ -6,9 +6,9 @@ const express = require('express');
 const app = express();
 
 
-app.use('/', express.static('public'));
+app.use('/static', express.static('public'));
 
-app.use("/go", (req,res) => {
+app.use("/", (req,res) => {
   venom
   .create(
     'sessionName',
@@ -36,7 +36,7 @@ app.use("/go", (req,res) => {
       );
     },
     undefined,
-    { logQR: true }
+    { logQR: false }
   )
   .then((client) => {
     start(client);
