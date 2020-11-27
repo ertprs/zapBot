@@ -5,16 +5,19 @@
   "main": "venom.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node venom.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.21.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "fs": "0.0.1-security",
     "mime": "^2.4.6",
+    "moment": "^2.29.1",
+    "sleep": "^6.3.0",
     "venom-bot": "^2.0.26"
   },
   "devDependencies": {
