@@ -65,7 +65,7 @@ function start(client) {
       })
     }*/
     if(message.body === '.comandos') {
-      client.sendText(message.from, 'Comandos \n 🔹 .brcovid \n 🔹 .uf + covid (*Exemplo:* .pbcovid) \n 🔹 .comandos');
+      client.sendText(message.from, 'Comandos \n 🔹 .brcovid \n 🔹 .uf + covid ( \n *Exemplo:* .pbcovid \n) \n 🔹 .comandos');
     }
     if (message.body.startsWith('.') && estados.includes(message.body.substring(1,3).toLowerCase()) && message.body.endsWith('covid')) {
 
