@@ -2,8 +2,10 @@ const fs = require('fs')
 const mime = require('mime-types')
 const venom = require('venom-bot')
 const express = require('express');
+const cors = require('cors');
 
 const app = express();
+app.use(cors());
 
 
 app.use('/static', express.static('public'));
