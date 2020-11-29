@@ -70,20 +70,40 @@ function start(client) {
     if (message.body.startsWith('.') && estados.includes(message.body.substring(1,3).toLowerCase()) && message.body.endsWith('covid')) {
 
       const state_lower = message.body.substring(1,3).toLowerCase();
-      console.log(state_lower);
+      
       const state_covid = await axios.get(`https://covid19-brazil-api.now.sh/api/report/v1/brazil/uf/${state_lower}`);
       
 
       moment.locale('pt-BR');
 
       const {state, cases, deaths, datetime} = state_covid.data;
+      const total_mortes = deaths;
 
-      const date = moment(datetime).format('DD/MM/YYYY');
+      const hoje = moment(datetime).format('DD/MM/YYYY');
+
+      const ano = hoje.substring(6,10);
+      const mes = hoje.substring(3,5);
+      const ontem_day_number = parseInt(hoje.substring(0,2)) - 1;
+      const ontem_day = ontem_day_number.toString();
+      const query = ano.concat(`${mes}`,`${ontem_day}`);
+
+      const state_covid_ontem = await axios.get(`https://covid19-brazil-api.now.sh/api/report/v1/brazil/${query}`);
+
+
+      const recupera_mesmo_estado = state_covid_ontem.data.data.filter((s) => {
+        return s.uf === state_covid.data.uf;
+        })
+
+        const mortes_ontem = recupera_mesmo_estado[0].deaths;
+        
+        const morte_diaria = total_mortes - mortes_ontem;
+        console.log(morte_diaria);
+
       const hour = moment(datetime).format('HH:mm'); 
 
       const cases_f = cases.toLocaleString('pt-BR').replace(',','.');
       
-      client.sendText(message.from, `⚠️ Status da COVID-19 na ${state} ⚠️ \n Casos confirmados: *${cases_f.toLocaleString('pt-BR').replace(',','.')}* \n Mortes: *${deaths.toLocaleString('pt-BR').replace(',','.')}* \n Última atualização feita em ${date} às ${hour}.`);
+      client.sendText(message.from, `⚠️ Status da COVID-19 -> ${state} ⚠️ \n Total de casos confirmados: *${cases_f.toLocaleString('pt-BR').replace(',','.')}* \n Total de mortes: *${total_mortes.toLocaleString('pt-BR').replace(',','.')}* \n Mortes diária: *${morte_diaria}* \n Última atualização feita em ${hoje} às ${hour}.`);
 
       client.sendText(message.from, 'Fique em casa, se for sair use máscara! 😷');
 
@@ -104,9 +124,21 @@ function start(client) {
       const confirmed_f = confirmed.toLocaleString('pt-BR').replace(',','.');
       
       const date = moment(updated_at).format('DD/MM/YYYY');
+
+      const ano = date.substring(6,10);
+      const mes = date.substring(3,5);
+      const ontem_day_number = parseInt(date.substring(0,2)) - 2;
+      const ontem_day = ontem_day_number.toString();
+      const query = ano.concat(`${mes}`,`${ontem_day}`);
+      
+
+      const states_covid_ontem = await axios.get(`https://covid19-brazil-api.now.sh/api/report/v1/brazil/${query}`);
+      const mortes_ontem = states_covid_ontem.data.data.reduce((total, state) => total + state.deaths, 0);
+        
+      const mortes_diaria = deaths - mortes_ontem;
       const hour = moment(updated_at).format('HH:mm'); 
       
-      client.sendText(message.from, `⚠️ Status da COVID-19 no Brasil ⚠️ \n Casos confirmados: *${confirmed_f.replace(',','.')}* \n Mortes: *${deaths.toLocaleString('pt-BR').replace(',','.')}* \n Última atualização feita em ${date} às ${hour}.`);
+      client.sendText(message.from, `⚠️ Status da COVID-19 no Brasil ⚠️ \n Total de casos confirmados: *${confirmed_f.replace(',','.')}* \n Total de Mortes: *${deaths.toLocaleString('pt-BR').replace(',','.')}* \n Mortes diária: *${mortes_diaria}* \n Última atualização feita em ${date} às ${hour}.`);
 
       client.sendText(message.from, 'Fique em casa, se for sair use máscara! 😷');
 
