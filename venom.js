@@ -47,32 +47,32 @@ let estados = ['ro','ac','am','rr','pa','ap','to','ma','pi','ce','rn','pb','pe',
 
 function start(client) {
   client.onAddedToGroup(chatEvent => {
-    client.sendText(chatEvent.id,'🤖 Olá sou o Corona Bot e vim te atulalizar sobre os números da COVID-19. \n Digite *.comandos* para saber meus comandos.');
+    client.sendText(chatEvent.id,'🤖 Olá sou o Corona Bot e vim te atulalizar sobre os números da COVID-19. \n Digite *.comandos* para saber meus comandos. \n Desenvolvido por: Rafael Dantas. \n Contato: (83) 9 9694-5519');
   });
   
   client.onMessage(async (message) => {
-    /*if (message.isMedia == true) {
+     if (message.isMedia == true) {
       const buffer = await client.decryptFile(message)
-      const fileName = `image.gif`
+      const fileName = `image.${mime.extension(message.mimetype)}`
       await fs.writeFile(fileName, buffer, async (err) => {
         if (err) {
           console.log(err)
         } else {
           console.log('File written successfully')
-          await client.sendImageAsStickerGif(message.from, `./${fileName}`)
+          await client.sendImageAsSticker(message.from, `./${fileName}`)
             .catch((err) => { })
         }
       })
-    }*/
+    }
     if(message.body === '.comandos') {
-      client.sendText(message.from, 'Comandos \n 🔹 .brcovid \n 🔹 .uf + covid (Exemplo: .pbcovid) \n 🔹 .comandos');
+      client.sendText(message.from, 'Comandos \n 🔹 .brcovid \n 🔹 .uf + covid (Exemplo: .pbcovid) \n 🔹 Manda tua imagem que eu faço figurinha. \n 🔹 .comandos');
     }
     if (message.body.startsWith('.') && estados.includes(message.body.substring(1,3).toLowerCase()) && message.body.endsWith('covid')) {
-
+      console.log("entrei no if")
       const state_lower = message.body.substring(1,3).toLowerCase();
       
       const state_covid = await axios.get(`https://covid19-brazil-api.now.sh/api/report/v1/brazil/uf/${state_lower}`);
-      
+      console.log(state_lower);
 
       moment.locale('pt-BR');
 
@@ -86,6 +86,7 @@ function start(client) {
       const ontem_day_number = parseInt(hoje.substring(0,2)) - 1;
       const ontem_day = ontem_day_number.toString();
       const query = ano.concat(`${mes}`,`${ontem_day}`);
+      console.log(query);
 
       const state_covid_ontem = await axios.get(`https://covid19-brazil-api.now.sh/api/report/v1/brazil/${query}`);
 
@@ -93,7 +94,7 @@ function start(client) {
       const recupera_mesmo_estado = state_covid_ontem.data.data.filter((s) => {
         return s.uf === state_covid.data.uf;
         })
-
+        console.log(recupera_mesmo_estado);
         const mortes_ontem = recupera_mesmo_estado[0].deaths;
         
         const morte_diaria = total_mortes - mortes_ontem;
