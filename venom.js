@@ -51,9 +51,9 @@ function start(client) {
   });
   
   client.onMessage(async (message) => {
-    /*if (message.isMedia == true) {
+    if (message.isMedia == true) {
       const buffer = await client.decryptFile(message)
-      const fileName = `image.gif`
+      const fileName = `image.${mime.extension(message.mimetype)}`
       await fs.writeFile(fileName, buffer, async (err) => {
         if (err) {
           console.log(err)
@@ -63,7 +63,7 @@ function start(client) {
             .catch((err) => { })
         }
       })
-    }*/
+    }
     if(message.body === '.comandos') {
       client.sendText(message.from, 'Comandos \n 🔹 .brcovid \n 🔹 .uf + covid (Exemplo: .pbcovid) \n 🔹 .comandos');
     }
